@@ -1,75 +1,49 @@
 # NFL Draft Prediction 🏈
 
-Machine Learning model for predicting NFL Draft selections using historical player data.  
-Developed for the **GCI World 2026 OmniCampus Competition**.
+**GCI World 2026 — OmniCampus Competition**  
+Competition Period: April 29, 2026 – June 12, 2026  
 
 ---
 
 ## Project Overview
 
-This project tackles a **binary classification problem**:
-
-- **Target:** Drafted (1) vs Not Drafted (0)
+- **Goal:** Predict whether a college athlete will be selected in the NFL Draft (binary classification)
 - **Evaluation Metric:** ROC-AUC
-- **Final Score:** **0.84332 ROC-AUC**
-- **Competition Ranking:** Top 20%
-
-The goal is to predict whether a college athlete will be selected in the NFL Draft based on physical performance metrics, position information, and athletic test results.
+- **Final Score:** **0.84332 AUC (Top 20%)**
 
 ---
 
-## Dataset
+## Approach Summary
 
-The dataset contains information about college football players, including:
-
-- Physical attributes (height, weight, BMI)
-- Athletic performance metrics (40-yard dash, vertical jump, bench press)
-- Agility tests (3-cone drill, shuttle run)
-- Player position and type
-- Draft outcome (target variable)
-
-> Dataset provided as part of the GCI World 2026 OmniCampus Competition.
+1. **Exploratory Data Analysis** — class balance, missing values, correlations, feature distributions by draft status
+2. **Feature Engineering** — speed score, explosive score, weight/height categories, missing-value flags, composite athletic features, smoothed target encoding
+3. **Smart Missing Value Imputation** — group-based medians by position/weight/speed categories instead of simple mean
+4. **Model Selection** — RandomizedSearchCV across Gradient Boosting, Random Forest, and XGBoost
+5. **Final Model** — XGBoost with Stratified K-Fold (5 folds), predictions averaged across folds
 
 ---
 
-## Technologies Used
+## Key Features Engineered
 
-- Python
-- Pandas, NumPy
-- Scikit-learn
-- XGBoost, LightGBM
-- Matplotlib, Seaborn
-- Jupyter Notebook
+| Feature | Description |
+|---------|-------------|
+| `speed_score` | Composite of 40-yard dash, shuttle, and 3-cone drill (normalized) |
+| `explosion` | Composite of vertical jump and broad jump |
+| `power_cat` | Bench press strength category |
+| `overall_score` | Weighted sum of athletic categories (speed double-weighted) |
+| `Position_Type_te` | Smoothed target encoding for position |
+| `is_top_school` | Flag for top-40 schools by prospect volume |
+| `combine_tests_completed` | Count of completed combine tests (missingness is informative) |
 
 ---
 
-## Project Workflow
+## Models Compared
 
-### 1. Exploratory Data Analysis
-- Class balance assessment
-- Missing value patterns
-- Feature distributions and correlations
-- Position-based draft rate analysis
-
-### 2. Feature Engineering & Preprocessing
-- Created composite scores (Speed Score, Explosive Score)
-- Categorical encoding (weight/height/speed categories)
-- Smoothed target encoding for position features
-- Group-based missing value imputation
-- Missing-value indicator flags
-
-### 3. Model Building
-Multiple classifiers evaluated with RandomizedSearchCV:
-
-- Gradient Boosting Classifier
-- Random Forest Classifier
-- XGBoost Classifier ✅ **(Final Model)**
-- LightGBM Classifier
-
-### 4. Model Evaluation
-- **Validation Strategy:** Stratified K-Fold Cross-Validation (5 folds)
-- **Prediction:** Averaged probabilities across all folds
-- **Metric:** ROC-AUC
+| Model | Best CV AUC |
+|-------|-------------|
+| XGBoost | **0.8485** ✅ |
+| Gradient Boosting | 0.8462 |
+| Random Forest | 0.8421 |
 
 ---
 
@@ -82,17 +56,25 @@ Multiple classifiers evaluated with RandomizedSearchCV:
 
 ![Competition Score](score_screenshot.png)
 
-The final XGBoost model achieved a ROC-AUC score of **0.84332**, placing within the **Top 20%** of competition participants.
-
-The test predictions were submitted to the OmniCampus GCI World competition platform for final evaluation.
+The test predictions were submitted to the **OmniCampus GCI World** competition platform for final evaluation.
 
 ---
 
 ## Repository Contents
 
-- `nfl_draft_prediction.ipynb` — Complete notebook with EDA, feature engineering, model training, and evaluation
+- `nfl_draft_prediction.ipynb` — Complete notebook: EDA, feature engineering, model training, and submission generation
 - `README.md` — Project documentation
-- `score_screenshot.png` — Competition leaderboard result
+- `score_screenshot.png` — Competition result
+
+---
+
+## Technologies Used
+
+- Python (Pandas, NumPy)
+- Scikit-learn (RandomizedSearchCV, StratifiedKFold)
+- XGBoost
+- Matplotlib, Seaborn
+- Jupyter Notebook
 
 ---
 
@@ -101,13 +83,6 @@ The test predictions were submitted to the OmniCampus GCI World competition plat
 **Anas Bakeer**
 
 - GitHub: [@anasbakir185](https://github.com/anasbakir185)
-
----
-
-## Acknowledgments
-
-- OmniCampus GCI World 2026 Competition organizers
-- Scikit-learn, XGBoost, and LightGBM communities
 
 ---
 
