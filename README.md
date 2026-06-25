@@ -54,7 +54,6 @@ Competition Period: April 29, 2026 – June 12, 2026
 | **ROC-AUC** | **0.84332** |
 | **Ranking** | Top 20% |
 
-![Competition Score](score_screenshot.png)
 
 The test predictions were submitted to the **OmniCampus GCI World** competition platform for final evaluation.
 
